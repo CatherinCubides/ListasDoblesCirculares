@@ -1,0 +1,46 @@
+public class Ruta {
+public static void main(String[] args) {
+        System.out.println("🚌 RUTA NOCTURNA INTERMUNICIPAL - LISTA DOBLEMENTE ENLAZADA CIRCULAR\n");
+
+        RutaNocturna ruta = new RutaNocturna();
+
+        System.out.println("1. ESTABLECIENDO RUTA BASE:");
+        ruta.insertarFinal("Fusagasuga");
+        ruta.insertarFinal("Silvania");
+        ruta.insertarFinal("Tibacuy");
+        ruta.insertarFinal("Pasca");
+        ruta.insertarFinal("Arbelaez");
+        
+        System.out.println();
+        ruta.mostrarRuta();
+        System.out.println();
+
+        System.out.println("2. RUTA DE RECORRIDOS:");
+        ruta.recorrerIda();
+        System.out.println();
+        ruta.recorrerVuelta();
+        System.out.println();
+
+        System.out.println("3. OPERACION DE INSERCION:");
+        ruta.insertarDespuesDe("Silvania", "Granada");
+        ruta.insertarDespuesDe("Pasca", "San Bernardo");
+        System.out.println();
+        ruta.mostrarRuta();
+        System.out.println();
+
+        System.out.println("4. OPERACION DE ELIMINACION:");
+        ruta.eliminarPorNombre("Tibacuy");
+        System.out.println();
+        ruta.mostrarRuta();
+        System.out.println();
+
+        System.out.println("5. RECORRIDOS FINALES:");
+        ruta.recorrerIda();
+        System.out.println();
+        ruta.recorrerVuelta();
+        System.out.println();
+
+        System.out.println("6. PRUEBAS ADICIONALES:");
+        ruta.eliminarPorNombre("MunicipioInexistente"); // Prueba de eliminación fallida
+        ruta.insertarDespuesDe("MunicipioInexistente", "Nuevo"); // Prueba de inserción fallida
+    }}
