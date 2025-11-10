@@ -1,0 +1,199 @@
+public class RutaNocturna {
+    
+private NodoRuta cabeza;
+    private NodoRuta cola;
+    private int tamaño;
+    
+    public RutaNocturna() {
+        this.cabeza = null;
+        this.cola = null;
+        this.tamaño = 0;
+    }
+    
+    public void insertarFinal(String municipio) {
+        NodoRuta nuevoNodo = new NodoRuta(municipio);
+        
+        if (cabeza == null) {
+            // Lista vacía
+            cabeza = nuevoNodo;
+            cola = nuevoNodo;
+            cabeza.siguiente = cabeza;
+            cabeza.anterior = cabeza;
+        } else {
+            // Insertar al final
+            nuevoNodo.anterior = cola;
+            nuevoNodo.siguiente = cabeza;
+            cola.siguiente = nuevoNodo;
+            cabeza.anterior = nuevoNodo;
+            cola = nuevoNodo;
+        }
+        tamaño++;
+        System.out.println("✓ Municipio '" + municipio + "' agregado a la ruta");
+    }
+
+    public boolean insertarDespuesDe(String municipioReferencia, String nuevoMunicipio) {
+        if (cabeza == null) {
+            System.out.println("✗ La ruta está vacía");
+            return false;
+        }
+        
+        NodoRuta actual = cabeza;
+        boolean encontrado = false;
+        
+        do {
+            if (actual.municipio.equalsIgnoreCase(municipioReferencia)) {
+                encontrado = true;
+                break;
+            }
+            actual = actual.siguiente;
+        } while (actual != cabeza);
+        
+        if (!encontrado) {
+            System.out.println("✗ Municipio '" + municipioReferencia + "' no encontrado en la ruta");
+            return false;
+        }
+        
+        NodoRuta nuevoNodo = new NodoRuta(nuevoMunicipio);
+        
+        // Insertar después del nodo actual
+        nuevoNodo.siguiente = actual.siguiente;
+        nuevoNodo.anterior = actual;
+        actual.siguiente.anterior = nuevoNodo;
+        actual.siguiente = nuevoNodo;
+        
+        // Si insertamos después del último nodo, actualizamos la cola
+        if (actual == cola) {
+            cola = nuevoNodo;
+        }
+        
+        tamaño++;
+        System.out.println("✓ Municipio '" + nuevoMunicipio + "' insertado después de '" + municipioReferencia + "'");
+        return true;
+    }
+    
+    // Método para eliminar un municipio por nombre
+    public boolean eliminarPorNombre(String municipio) {
+        if (cabeza == null) {
+            System.out.println("✗ La ruta está vacía");
+            return false;
+        }
+        
+        NodoRuta actual = cabeza;
+        boolean encontrado = false;
+        
+        do {
+            if (actual.municipio.equalsIgnoreCase(municipio)) {
+                encontrado = true;
+                break;
+            }
+            actual = actual.siguiente;
+        } while (actual != cabeza);
+        
+        if (!encontrado) {
+            System.out.println("✗ Municipio '" + municipio + "' no encontrado en la ruta");
+            return false;
+        }
+        
+        // Caso especial: solo un nodo
+        if (tamaño == 1) {
+            cabeza = null;
+            cola = null;
+        } else {
+            // Reenlazar los nodos adyacentes
+            actual.anterior.siguiente = actual.siguiente;
+            actual.siguiente.anterior = actual.anterior;
+            
+            // Actualizar cabeza o cola si es necesario
+            if (actual == cabeza) {
+                cabeza = actual.siguiente;
+            }
+            if (actual == cola) {
+                cola = actual.anterior;
+            }
+        }
+        
+        tamaño--;
+        System.out.println("✓ Municipio '" + municipio + "' eliminado de la ruta");
+        return true;
+    }
+    
+    // Método para recorrer la ruta en sentido de ida (hacia adelante)
+    public void recorrerIda() {
+        if (cabeza == null) {
+            System.out.println("La ruta está vacía");
+            return;
+        }
+        
+        System.out.println("=== RECORRIDO DE IDA ===");
+        NodoRuta actual = cabeza;
+        int contador = 1;
+        
+        do {
+            System.out.println(contador + ". " + actual.municipio);
+            if (actual.siguiente != cabeza) {
+                System.out.println("   ↓");
+            }
+            actual = actual.siguiente;
+            contador++;
+        } while (actual != cabeza);
+        
+        System.out.println("↻ (Regresa a " + cabeza.municipio + ")");
+        System.out.println("Total de municipios: " + tamaño);
+    }
+    
+    // Método para recorrer la ruta en sentido de vuelta (hacia atrás)
+    public void recorrerVuelta() {
+        if (cabeza == null) {
+            System.out.println("La ruta está vacía");
+            return;
+        }
+        
+        System.out.println("=== RECORRIDO DE VUELTA ===");
+        NodoRuta actual = cola;
+        int contador = 1;
+        
+        do {
+            System.out.println(contador + ". " + actual.municipio);
+            if (actual.anterior != cola) {
+                System.out.println("   ↑");
+            }
+            actual = actual.anterior;
+            contador++;
+        } while (actual != cola);
+        
+        System.out.println("↺ (Regresa a " + cola.municipio + ")");
+        System.out.println("Total de municipios: " + tamaño);
+    }
+    
+    // Método para mostrar el estado actual de la ruta
+    public void mostrarRuta() {
+        if (cabeza == null) {
+            System.out.println("La ruta está vacía");
+            return;
+        }
+        
+        System.out.println("=== ESTADO ACTUAL DE LA RUTA ===");
+        NodoRuta actual = cabeza;
+        
+        do {
+            System.out.print(actual.municipio);
+            if (actual.siguiente != cabeza) {
+                System.out.print(" → ");
+            }
+            actual = actual.siguiente;
+        } while (actual != cabeza);
+        
+        System.out.println(" → (regresa a) " + cabeza.municipio);
+        System.out.println("Municipios en ruta: " + tamaño);
+    }
+    
+    // Método para verificar si la lista está vacía
+    public boolean estaVacia() {
+        return cabeza == null;
+    }
+    
+    // Método para obtener el tamaño de la lista
+    public int getTamaño() {
+        return tamaño;
+    }
+}
