@@ -1,0 +1,16 @@
+public class NodoRuta {
+    String municipio;
+    NodoRuta siguiente;
+    NodoRuta anterior;
+    
+    public NodoRuta(String municipio) {
+        this.municipio = municipio;
+        this.siguiente = null;
+        this.anterior = null;
+    }
+    
+    @Override
+    public String toString() {
+        return municipio;
+    }
+}
